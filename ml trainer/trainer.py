@@ -1,11 +1,19 @@
+##
+##  SMARTLIFE RESPONSIVE SYSTEM
+##
+##  Original script by Philip Mair (https://github.com/Sensor-CDT-14-15/Machine-Learning)
+##  Edited by Xander Will
+##
+##  trainer.py
+##  
+
 import sys
 import collections
 import itertools
-from scipy.stats import mode
 
 import numpy as np
-import matplotlib.pyplot as plt
-%matplotlib inline
+from scipy.stats import mode
+from scipy.spatial.distance import squareform
 
 try:
     from IPython.display import clear_output
@@ -75,19 +83,19 @@ class KnnDtw(object):
         # Create cost matrix via broadcasting with large int
         ts_a, ts_b = np.array(ts_a), np.array(ts_b)
         M, N = len(ts_a), len(ts_b)
-        cost = sys.maxint * np.ones((M, N))
+        cost = sys.maxsize * np.ones((M, N))
 
         # Initialize the first row and column
         cost[0, 0] = d(ts_a[0], ts_b[0])
-        for i in xrange(1, M):
+        for i in range(1, M):
             cost[i, 0] = cost[i-1, 0] + d(ts_a[i], ts_b[0])
 
-        for j in xrange(1, N):
+        for j in range(1, N):
             cost[0, j] = cost[0, j-1] + d(ts_a[0], ts_b[j])
 
         # Populate rest of cost matrix within window
-        for i in xrange(1, M):
-            for j in xrange(max(1, i - self.max_warping_window),
+        for i in range(1, M):
+            for j in range(max(1, i - self.max_warping_window),
                             min(N, i + self.max_warping_window)):
                 choices = cost[i - 1, j - 1], cost[i, j-1], cost[i-1, j]
                 cost[i, j] = min(choices) + d(ts_a[i], ts_b[j])
@@ -117,18 +125,15 @@ class KnnDtw(object):
         # Compute condensed distance matrix (upper triangle) of pairwise dtw distances
         # when x and y are the same array
         if(np.array_equal(x, y)):
-            x_s = shape(x)
-            dm = np.zeros((x_s[0] * (x_s[0] - 1)) // 2, dtype=np.double)
-            
-            p = ProgressBar(shape(dm)[0])
-            
-            for i in xrange(0, x_s[0] - 1):
-                for j in xrange(i + 1, x_s[0]):
+            x_len = np.shape(x)[0]
+            dm = np.zeros((x_len * (x_len - 1)) // 2, dtype=np.double)
+                        
+            for i in range(0, x_len - 1):
+                for j in range(i + 1, x_len):
                     dm[dm_count] = self._dtw_distance(x[i, ::self.subsample_step],
                                                       y[j, ::self.subsample_step])
                     
                     dm_count += 1
-                    p.animate(dm_count)
             
             # Convert to squareform
             dm = squareform(dm)
@@ -139,16 +144,13 @@ class KnnDtw(object):
             x_s = np.shape(x)
             y_s = np.shape(y)
             dm = np.zeros((x_s[0], y_s[0])) 
-            dm_size = x_s[0]*y_s[0]
-            p = ProgressBar(dm_size)
         
-            for i in xrange(0, x_s[0]):
-                for j in xrange(0, y_s[0]):
+            for i in range(0, x_s[0]):
+                for j in range(0, y_s[0]):
                     dm[i, j] = self._dtw_distance(x[i, ::self.subsample_step],
                                                   y[j, ::self.subsample_step])
                     # Update progress bar
                     dm_count += 1
-                    p.animate(dm_count)
         
             return dm
         
