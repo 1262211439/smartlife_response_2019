@@ -169,18 +169,18 @@ class KnnDtw(object):
               (1) the predicted class labels 
               (2) the knn label count probability
         """
-        
-        dm = self._dist_matrix(x, self.x)
+        best_labels = list()
+        for i, feature in enumerate(x):
+            dm = self._dist_matrix(feature, self.x[i])
 
-        # Identify the k nearest neighbors
-        knn_idx = dm.argsort()[:, :self.n_neighbors]
+            # Identify the k nearest neighbors
+            knn_idx = dm.argsort()[:, :self.n_neighbors]
 
-        # Identify k nearest labels
-        knn_labels = self.l[knn_idx]
+            # Identify k nearest labels
+            knn_labels = self.l[knn_idx]
 
-        # Model Label
-        mode_data = mode(knn_labels, axis=1)
-        mode_label = mode_data[0]
-        mode_proba = mode_data[1]/self.n_neighbors
+            # Model Label
+            mode_data = mode(knn_labels, axis=1)
+            best_labels.append(mode_data[0])
 
-        return mode_label.ravel(), mode_proba.ravel()
+        return mode(best_labels)
