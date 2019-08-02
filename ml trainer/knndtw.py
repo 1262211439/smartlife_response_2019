@@ -147,6 +147,7 @@ class KnnDtw(object):
         
             for i in range(0, x_s[0]):
                 for j in range(0, y_s[0]):
+                    print(i, j)
                     dm[i, j] = self._dtw_distance(x[i, ::self.subsample_step],
                                                   y[j, ::self.subsample_step])
                     # Update progress bar

@@ -1,46 +1,28 @@
 import os
 import pickle
-import numpy as np
 
+from numpy import array
 from knndtw import KnnDtw
-from re import search
+from imudata import IMUData
 
 FALL = 1
 NOT_FALL = 2
 
-model = KnnDtw()    # change parameters here! using defaults currently
-
-class IMUData():
-    def __init__(self):
-        self.kalmanX = list()
-        self.kalmanY = list()
-        self.x = list()
-        self.y = list()
-        self.z = list()
-
-    def append(self, s):
-        pattern = r"(-?[0-9]+\.[0-9]+)"
-        self.kalmanX.append(float(search("kalmanX " + pattern, s)[1]))
-        self.kalmanY.append(float(search("kalmanY " + pattern, s)[1]))
-        self.x.append(float(search("X = " + pattern, s)[1]))
-        self.y.append(float(search("Y = " + pattern, s)[1]))
-        self.z.append(float(search("Z = " + pattern, s)[1]))
-        
+model = KnnDtw()    # change parameters here! using defaults currently        
 
 train_files = list()
 for root, dirs, files in os.walk(r".\data\training\fall", topdown=False):
     for name in files:
-        print(os.path.join(root, name))
         train_files.append(os.path.join(root, name))
 labels = [FALL] * len(train_files)
 for root, dirs, files in os.walk(r".\data\training\not fall", topdown=False):
     for name in files:
-        print(os.path.join(root, name))
         train_files.append(os.path.join(root, name))
 labels.extend([NOT_FALL] * (len(labels) - len(train_files)))
 
 train_data = list()
 for file in train_files:
+    print("Reading", file)
     data = IMUData()
     with open(file, 'r') as f:
         for line in f:
@@ -58,9 +40,11 @@ for data in train_data:
     x.append(data.x)
     y.append(data.y)
     z.append(data.z)
-data = [np.array(kalmanX), np.array(kalmanY), np.array(x), np.array(y), np.array(z)]
+data = [array(kalmanX), array(kalmanY), array(x), array(y), array(z)]
+print(kalmanX)
+print(array(kalmanX))
 
-model.fit(data, np.array(labels))
+model.fit(data, array(labels))
 
 with open("model.p", "wb") as f:
     pickle.dump(model, f)
