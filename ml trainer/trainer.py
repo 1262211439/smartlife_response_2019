@@ -1,3 +1,13 @@
+##
+##  SMARTLIFE RESPONSIVE SYSTEM
+##
+##  Written by Xander Will
+##
+##  trainer.py
+##  
+##  "Builds model.p using data found in .\data\training"
+##
+
 import os
 import pickle
 
@@ -43,9 +53,6 @@ for data in train_data:
     y.append(data.y)
     z.append(data.z)
 data = [array(kalmanX), array(kalmanY), array(x), array(y), array(z)]
-#print(kalmanX)
-print(data)
-print(array(labels))
 
 model.fit(data, array(labels))
 

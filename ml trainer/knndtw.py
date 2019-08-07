@@ -4,8 +4,10 @@
 ##  Original script by Philip Mair (https://github.com/Sensor-CDT-14-15/Machine-Learning)
 ##  Edited by Xander Will
 ##
-##  trainer.py
+##  knndtw.py
 ##  
+##  "Class that implements the ML model used in this project"
+##
 
 import sys
 import collections

@@ -1,3 +1,13 @@
+##
+##  SMARTLIFE RESPONSIVE SYSTEM
+##
+##  Written by Xander Will
+##
+##  builder.py
+##  
+##  "Tests model.p using data found in .\data\testing"
+##
+
 import os
 import pickle
 
