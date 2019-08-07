@@ -109,7 +109,7 @@ class KnnDtw(object):
         
         Arguments
         ---------
-        x : array of shape [n_samples, n_timepoints]
+        x : array of shape [n_timepoints]
         
         y : array of shape [n_samples, n_timepoints]
         
@@ -138,20 +138,24 @@ class KnnDtw(object):
             # Convert to squareform
             dm = squareform(dm)
             return dm
-        
+
         # Compute full distance matrix of dtw distnces between x and y
         else:
-            x_s = np.shape(x)
             y_s = np.shape(y)
-            dm = np.zeros((x_s[0], y_s[0])) 
+            dm = np.zeros(y_s[0])
+            for i in range(0, y_s[0]):
+                dm[i] = self._dtw_distance(x[::self.subsample_step], y[i, ::self.subsample_step])
+            # x_s = np.shape(x)
+            # y_s = np.shape(y)
+            # dm = np.zeros((x_s[0], y_s[0])) 
         
-            for i in range(0, x_s[0]):
-                for j in range(0, y_s[0]):
-                    print(i, j)
-                    dm[i, j] = self._dtw_distance(x[i, ::self.subsample_step],
-                                                  y[j, ::self.subsample_step])
-                    # Update progress bar
-                    dm_count += 1
+            # for i in range(0, x_s[0]):
+            #     for j in range(0, y_s[0]):
+            #         print("x step", x[i, ::self.subsample_step])
+            #         dm[i, j] = self._dtw_distance(x[i, ::self.subsample_step],
+            #                                       y[j, ::self.subsample_step])
+            #         # Update progress bar
+            #         dm_count += 1
         
             return dm
         
@@ -175,13 +179,13 @@ class KnnDtw(object):
             dm = self._dist_matrix(feature, self.x[i])
 
             # Identify the k nearest neighbors
-            knn_idx = dm.argsort()[:, :self.n_neighbors]
+            knn_idx = dm.argsort()[:self.n_neighbors]
 
             # Identify k nearest labels
             knn_labels = self.l[knn_idx]
 
             # Model Label
-            mode_data = mode(knn_labels, axis=1)
+            mode_data = mode(knn_labels)
             best_labels.append(mode_data[0])
 
         return mode(best_labels)

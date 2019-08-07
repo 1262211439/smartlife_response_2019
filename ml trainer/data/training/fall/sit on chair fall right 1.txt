@@ -109,3 +109,5 @@ Loop Time |  0.04| # kalmanX -64.90   kalmanY 66.60    X = -0.240743 G    Y = -0
 Loop Time |  0.04| # kalmanX -64.80   kalmanY 66.52    X = -0.241860 G    Y = -0.217700 G    Z = 0.106135 G  
 Loop Time |  0.04| # kalmanX -64.76   kalmanY 66.52    X = -0.243327 G    Y = -0.218265 G    Z = 0.106135 G  
 Loop Time |  0.04| # kalmanX -64.62   kalmanY 66.39    X = -0.240743 G    Y = -0.218265 G    Z = 0.106135 
+Loop Time |  0.04| # kalmanX -64.62   kalmanY 66.39    X = -0.240743 G    Y = -0.218265 G    Z = 0.106135 
+Loop Time |  0.04| # kalmanX -64.62   kalmanY 66.39    X = -0.240743 G    Y = -0.218265 G    Z = 0.106135 

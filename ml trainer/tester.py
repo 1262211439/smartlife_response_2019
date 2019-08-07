@@ -1,8 +1,10 @@
 import os
 import pickle
 
-from numpy import array
+from numpy import array, swapaxes
 from imudata import IMUData
+
+labels = {1 : "FALL", 2 : "NOT FALL"}
 
 with open("model.p", "rb") as f:
     model = pickle.load(f)
@@ -18,4 +20,5 @@ for file in test_files:
     with open(file, 'r') as f:
         for line in f:
             data.append(line)
-    print(file, "=", model.predict([array(data.kalmanX), array(data.kalmanY), array(data.x), array(data.y), array(data.z)]))
+    a = [array(data.kalmanX), array(data.kalmanY), array(data.x), array(data.y), array(data.z)]
+    print(file, "=", model.predict(a))
