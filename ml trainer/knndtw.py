@@ -172,9 +172,8 @@ class KnnDtw(object):
           
         Returns
         -------
-          2 arrays representing:
-              (1) the predicted class labels 
-              (2) the knn label count probability
+          Mode object containing the predicted label and the count
+          of said label within the nearest neighbors
         """
         best_labels = list()
         for i, feature in enumerate(x):

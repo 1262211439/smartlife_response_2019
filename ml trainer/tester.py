@@ -31,4 +31,6 @@ for file in test_files:
         for line in f:
             data.append(line)
     a = [array(data.kalmanX), array(data.kalmanY), array(data.x), array(data.y), array(data.z)]
+    result = model.predict(a)
+
     print(file, "=", model.predict(a))
